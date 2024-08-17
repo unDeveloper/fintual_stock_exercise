@@ -12,7 +12,7 @@
 * Entities definition
   * Portfolio:
     * stocks (property): Collection of Stocks
-    * profit (method): In charge to calculate the profits of the portfolio
+    * profit (method): In charge to calculate the profits of the portfolio. Method I used to calculate the portfolio profits can be found [here](https://www.angelone.in/knowledge-center/share-market/how-to-calculate-portfolio-returns)
   * Stock:
     * id (property): The stock identifier
     * date (property): The date the stock was bought
@@ -22,3 +22,37 @@
     * stock_id (property): The related stock
     * value (property): The value of the stock at that time
     * date (property): The date on which the price was recorded
+  * Probably missing things:
+    * Multiple stock purchases between dates with different costs (either up or down)
+
+#### Some seeding for testing
+```ruby
+stocks_list =[
+  'AMD',
+  'AMZN',
+  'AAPL',
+  'NVDA',
+  'INTC'
+]
+
+prices = []
+initial_date = DateTime.parse('2023-01-01')
+
+for i in 1..180 do
+  stocks_list.each do |stock|
+    current_date = initial_date + i
+    prices.push(Price.new(stock, rand(1..1000).to_f, current_date))
+  end
+end
+
+stocks = []
+stocks_list.each do |stock|
+  results = prices.select {|price| price.stock_id == stock}
+  stock_date = initial_date + (rand(1..180))
+  stocks.push(Stock.new(stock, results, stock_date))
+end
+
+portfolio = Portfolio.new
+portfolio.stocks = stocks
+portfolio.profit
+```
