@@ -54,5 +54,5 @@ end
 
 portfolio = Portfolio.new
 portfolio.stocks = stocks
-portfolio.profit
+portfolio.profit('2023-01-01', '2023-06-30')
 ```
